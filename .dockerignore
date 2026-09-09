@@ -1,0 +1,8 @@
+# Не тащить в контекст сборки: тяжёлое, локальное и секреты
+frontend/node_modules
+.venv
+legacy
+.git
+**/__pycache__
+**/.env*
+**/.DS_Store

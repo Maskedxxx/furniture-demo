@@ -1,0 +1,9 @@
+node_modules/
+.venv/
+.env
+__pycache__/
+*.pyc
+dist/
+.env.*
+.DS_Store
+legacy/credentials.txt

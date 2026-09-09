@@ -1,0 +1,48 @@
+# furniture-demo — демо-стандарт Spark (скил spark-deploy, references/compose-standard.md).
+# Запуск: cd deploy && docker compose up -d --build. Переменные — deploy/.env (см. env.example).
+name: furniture-demo
+
+# Ротация логов: на Spark по умолчанию её нет, долгоживущий контейнер забьёт диск
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+services:
+  app:
+    build:
+      context: ..                       # корень репозитория
+      dockerfile: deploy/Dockerfile
+    image: furniture-demo-app:demo
+    container_name: furniture-demo-app
+    env_file: .env                      # OPENROUTER_API_KEY, GEMINI_MODEL и переменные деплоя
+    ports:
+      - "127.0.0.1:${PORT}:8000"        # только loopback: гости идут через tuna, не через LAN
+    deploy:
+      resources:
+        limits:
+          memory: ${MEM_LIMIT:-1g}
+    restart: "no"                       # поднимает только лаунчер или владелец
+    logging: *logging
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/api/health', timeout=3).status==200 else 1)"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  # Публичный туннель; открывается только когда app healthy — гости не увидят 502.
+  # Без --basic-auth: у приложения свой экран входа (решение владельца).
+  tunnel:
+    image: yuccastream/tuna:0.34.2      # тег закреплён после первого запуска 2026-09-09
+    container_name: furniture-demo-tunnel
+    network_mode: host                  # чтобы видеть 127.0.0.1:${PORT} хоста
+    command: http 127.0.0.1:${PORT} --subdomain=${TUNA_SUBDOMAIN} --location=ru ${TUNA_EXTRA_ARGS}
+    environment:
+      TUNA_TOKEN: "${TUNA_TOKEN}"
+    depends_on:
+      app:
+        condition: service_healthy
+    restart: "no"
+    logging: *logging
