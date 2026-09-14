@@ -124,7 +124,7 @@ function LoginPage({ onLogin }) {
             </div>
           </div>
 
-          {error && <div style={{ background: "rgba(200,50,50,0.07)", border: "1px solid rgba(200,50,50,0.2)", color: "#a03030", fontSize: 13, padding: "10px 14px", borderRadius: 8, marginBottom: 16 }}>{error}</div>}
+          {error && <div style={{ background: "rgba(200,50,50,0.07)", border: "1px solid rgba(200,50,50,0.2)", color: "#a03030", fontSize: 13, padding: "10px 14px", borderRadius: 8, marginBottom: 16, whiteSpace: "pre-line" }}>{error}</div>}
 
           <button style={{ ...s.btnPrimary, width: "100%", opacity: loading ? 0.7 : 1 }} onClick={handleLogin} disabled={loading}>
             {loading ? "Проверка..." : "Войти →"}
@@ -324,7 +324,7 @@ function ScenarioAPage({ onResult, onBack, onLogout }) {
           </div>
         </div>
 
-        {error && <div style={{ background: "rgba(200,50,50,0.07)", border: "1px solid rgba(200,50,50,0.2)", color: "#a03030", fontSize: 13, padding: "12px 16px", borderRadius: 10, marginTop: 16 }}>{error}</div>}
+        {error && <div style={{ background: "rgba(200,50,50,0.07)", border: "1px solid rgba(200,50,50,0.2)", color: "#a03030", fontSize: 13, padding: "12px 16px", borderRadius: 10, marginTop: 16, whiteSpace: "pre-line" }}>{error}</div>}
 
         {/* Нижняя панель */}
         <div style={s.bottomBar}>
@@ -457,7 +457,7 @@ function ScenarioBPage({ onResult, onBack, onLogout }) {
           })}
         </div>
 
-        {error && <div style={{ background: "rgba(200,50,50,0.07)", border: "1px solid rgba(200,50,50,0.2)", color: "#a03030", fontSize: 13, padding: "12px 16px", borderRadius: 10, marginTop: 16 }}>{error}</div>}
+        {error && <div style={{ background: "rgba(200,50,50,0.07)", border: "1px solid rgba(200,50,50,0.2)", color: "#a03030", fontSize: 13, padding: "12px 16px", borderRadius: 10, marginTop: 16, whiteSpace: "pre-line" }}>{error}</div>}
 
         <div style={s.bottomBar}>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
